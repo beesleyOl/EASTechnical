@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 // Route represents a link between two locations with a specified distance

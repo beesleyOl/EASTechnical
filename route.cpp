@@ -3,7 +3,7 @@
 // Constructor definiton
 // Initializer list directly initializes member variables when object is created.
 route::route(
-    const std::string& destinatuon,
+    const std::string& destination,
     int distance)
     : destination(destination),
     distance(distance)
