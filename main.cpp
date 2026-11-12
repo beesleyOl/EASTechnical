@@ -2,30 +2,54 @@
 
 #include "location.h"
 #include "route.h"
+#include "pathfinder.h"
 
 int main()
 {
-    location cardiff("Cardiff");
+    graph routeNetwork;
 
-    cardiff.addRoute(route("Newport", 15));
-    cardiff.addRoute(route("Swansea", 40));
-    cardiff.addRoute(route("Bristol", 60));
+    routeNetwork.addLocation(
+        location("Cardiff"));
 
-    std::cout << "Location: "
-              << cardiff.getName()
-              << "\n\n";
+    routeNetwork.addLocation(
+        location("Newport"));
 
-    std::cout << "Available Routes:\n";
+    routeNetwork.addLocation(
+        location("Bristol"));
 
-    for (const route& route : cardiff.getRoutes())
+    routeNetwork.addConnection(
+        "Cardiff",
+        "Newport",
+        15);
+
+    routeNetwork.addConnection(
+        "Newport",
+        "Bristol",
+        20);
+
+    pathfinder finder;
+
+    pathresult result =
+        finder.findShortestPath(
+            routeNetwork,
+            "Cardiff",
+            "Bristol");
+
+    std::cout
+        << "Shortest Distance: "
+        << result.getDistance()
+        << " km\n\n";
+
+    std::cout << "Route:\n";
+
+    for (const auto& stop :
+         result.getRoute())
     {
         std::cout
-            << "Destination: "
-            << route.getDestination()
-            << " | Distance: "
-            << route.getDistance()
-            << " km\n";
+            << stop
+            << '\n';
     }
 
     return 0;
+
 }
