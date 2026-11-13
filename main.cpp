@@ -16,6 +16,9 @@ int main()
 
     routeNetwork.addLocation(
         location("Bristol"));
+    
+    routeNetwork.addLocation(
+        location("Swansea"));
 
     routeNetwork.addConnection(
         "Cardiff",
@@ -26,8 +29,20 @@ int main()
         "Newport",
         "Bristol",
         20);
+    
+    routeNetwork.addConnection(
+        "Cardiff",
+        "Swansea",
+        40);
 
+    routeNetwork.addConnection(
+        "Cardiff",
+        "Bristol",
+        60);
+    
     pathfinder finder;
+    
+    std::cout << "Before pathfinder\n";
 
     pathresult result =
         finder.findShortestPath(
@@ -35,6 +50,8 @@ int main()
             "Cardiff",
             "Bristol");
 
+    std::cout << "After pathfinder\n";
+    
     std::cout
         << "Shortest Distance: "
         << result.getDistance()
