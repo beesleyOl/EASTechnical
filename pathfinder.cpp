@@ -41,5 +41,140 @@ pathresult pathfinder::findShortestPath(
         std::string
     > visited;
 
+    std::priority_queue<
+        QueueNode,
+        std::vector<QueueNode>,
+        std::greater<QueueNode>
+    > queue;
+
+    distances[start] = 0;
+
+    queue.push(
+        {
+            start,
+            0
+        });
+    
+    while (!queue.empty())
+    {
+        QueueNode currentQueueNode =
+            queue.top();
+        
+        queue.pop();
+
+        std::string currentLocation = 
+            currentQueueNode.location;
+        
+        if (visited.count(currentLocation))
+        {
+            continue;
+        }
+
+        visited.insert(currentLocation);
+
+        if(currentLocation ==
+            destination)
+        {
+            break;
+        }
+
+        const location& currentNode = 
+            graph.getLocation(
+                currentLocation);
+        
+        for (const route& r :
+            currentNode.getRoutes())
+        {
+            int newDistance = 
+                distances[currentLocation]
+                + r.getDistance();
+            
+            std::cout
+                << "Checking "
+                << currentLocation
+                << " -> "
+                << r.getDestination()
+                << '\n';
+
+            if (
+                !distances.count(
+                    r.getDestination())
+                ||
+                newDistance
+                    <
+                distances[
+                    r.getDestination()
+                ])
+            {
+                std::cout
+                    << "Updating "
+                    << r.getDestination()
+                    << " to "
+                    << newDistance
+                    << '\n';
+
+                distances[
+                    r.getDestination()
+                ] = newDistance;
+
+                previous[
+                    r.getDestination()
+                ] = currentLocation;
+
+                queue.push(
+                {
+                    r.getDestination(),
+                    newDistance
+                });
+            }
+        }
+
+    }
+
+    if (!distances.count(destination))
+    {
+        return result;
+    }
+
+    std::cout << "\nPrevious Map:\n";
+
+    for (const auto& pair : previous)
+    {
+        std::cout
+            << pair.first
+            << " <- "
+            << pair.second
+            << '\n';
+    }
+
+    std::vector<std::string> path;
+
+    std::string current = 
+        destination;
+    
+    while (current != start)
+    {
+        std::cout
+            << "Reconstructing: "
+            << current
+            << '\n';
+        
+        path.push_back(current);
+
+        current =
+            previous[current];
+    }
+
+    path.push_back(start);
+
+    std::reverse(
+        path.begin(),
+        path.end());
+
+    result.setDistance(
+        distances[destination]);
+
+    result.setRoute(path);
+
     return result;
 }
