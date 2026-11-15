@@ -89,13 +89,6 @@ pathresult pathfinder::findShortestPath(
                 distances[currentLocation]
                 + r.getDistance();
             
-            std::cout
-                << "Checking "
-                << currentLocation
-                << " -> "
-                << r.getDestination()
-                << '\n';
-
             if (
                 !distances.count(
                     r.getDestination())
@@ -106,13 +99,6 @@ pathresult pathfinder::findShortestPath(
                     r.getDestination()
                 ])
             {
-                std::cout
-                    << "Updating "
-                    << r.getDestination()
-                    << " to "
-                    << newDistance
-                    << '\n';
-
                 distances[
                     r.getDestination()
                 ] = newDistance;
@@ -136,29 +122,13 @@ pathresult pathfinder::findShortestPath(
         return result;
     }
 
-    std::cout << "\nPrevious Map:\n";
-
-    for (const auto& pair : previous)
-    {
-        std::cout
-            << pair.first
-            << " <- "
-            << pair.second
-            << '\n';
-    }
-
     std::vector<std::string> path;
 
     std::string current = 
         destination;
     
     while (current != start)
-    {
-        std::cout
-            << "Reconstructing: "
-            << current
-            << '\n';
-        
+    {        
         path.push_back(current);
 
         current =

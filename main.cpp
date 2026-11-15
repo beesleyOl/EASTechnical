@@ -15,15 +15,43 @@ int main()
     
     pathfinder finder;
     
-    std::cout << "Before pathfinder\n";
+    std::string startLocation;
+    std::string destinationLocation;
 
-    pathresult result =
+    std::cout << "Enter start location: ";
+    std::getline(
+        std::cin,
+        startLocation);
+    
+    if (!routeNetwork.hasLocation(startLocation))
+    {
+        std::cout
+            << "The start location you entered is not valid: "
+            << startLocation
+            << '\n';
+        
+        return 1;
+    }
+    std::cout << "Enter destination: ";
+    std::getline(
+        std::cin,
+        destinationLocation);
+    
+    if (!routeNetwork.hasLocation(destinationLocation))
+    {
+        std::cout
+            << "The end location you entered is not valid: "
+            << destinationLocation
+            << '\n';
+        
+        return 1;
+    }
+
+    pathresult result = 
         finder.findShortestPath(
             routeNetwork,
-            "Cardiff",
-            "Bristol");
-
-    std::cout << "After pathfinder\n";
+            startLocation,
+            destinationLocation);
     
     std::cout
         << "Shortest Distance: "
