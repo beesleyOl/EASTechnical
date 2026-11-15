@@ -3,42 +3,15 @@
 #include "location.h"
 #include "route.h"
 #include "pathfinder.h"
+#include "fileLoader.h"
 
 int main()
 {
-    graph routeNetwork;
+    fileLoader loader;
 
-    routeNetwork.addLocation(
-        location("Cardiff"));
-
-    routeNetwork.addLocation(
-        location("Newport"));
-
-    routeNetwork.addLocation(
-        location("Bristol"));
-    
-    routeNetwork.addLocation(
-        location("Swansea"));
-
-    routeNetwork.addConnection(
-        "Cardiff",
-        "Newport",
-        15);
-
-    routeNetwork.addConnection(
-        "Newport",
-        "Bristol",
-        20);
-    
-    routeNetwork.addConnection(
-        "Cardiff",
-        "Swansea",
-        40);
-
-    routeNetwork.addConnection(
-        "Cardiff",
-        "Bristol",
-        60);
+    graph routeNetwork =
+        loader.loadGraph(
+            "routes.txt");
     
     pathfinder finder;
     

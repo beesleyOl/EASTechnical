@@ -1,0 +1,4 @@
+Cardiff,Newport,15
+Newport,Bristol,20
+Cardiff,Swansea,40
+Cardiff,Bristol,60
