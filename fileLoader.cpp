@@ -9,6 +9,8 @@ graph fileLoader::loadGraph(
 {
     graph routeNetwork;
 
+    // Open the route destination file, with the expected format being:
+    // From,To,Distance
     std::ifstream file(filename);
 
     if (!file.is_open())
@@ -23,11 +25,13 @@ graph fileLoader::loadGraph(
     file,
     line))
 {
+    // Skips blank lines to allow clear organisation in data file.
     if (line.empty())
     {
         continue;
     }
 
+    // Splits the CSV line into its desired components
     std::stringstream ss(line);
 
     std::string from;
@@ -38,18 +42,20 @@ graph fileLoader::loadGraph(
     std::getline(ss, to, ',');
     std::getline(ss, distanceString, ',');
 
+    // SKip invalid records that are missing fields.
     if (from.empty() ||
         to.empty() ||
         distanceString.empty())
     {
         std::cout
-            << "Skipping malformed line: "
+            << "Skipping invalid line: "
             << line
             << '\n';
 
         continue;
     }
 
+    // COnverts distance from a string to an interger
     int distance;
 
     try
@@ -67,6 +73,7 @@ graph fileLoader::loadGraph(
         continue;
     }
 
+    // Creating locations if they have not been added already
     if (!routeNetwork.hasLocation(from))
     {
         routeNetwork.addLocation(
@@ -79,6 +86,7 @@ graph fileLoader::loadGraph(
             location(to));
     }
 
+    //Creating a route between the two locations with the specified distance 
     routeNetwork.addConnection(
         from,
         to,

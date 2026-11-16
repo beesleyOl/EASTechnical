@@ -7,6 +7,7 @@
 
 int main()
 {
+    // Loads the route network from a seperate text file.
     fileLoader loader;
 
     graph routeNetwork =
@@ -14,15 +15,17 @@ int main()
             "routes.txt");
     
     pathfinder finder;
-    
+
     std::string startLocation;
     std::string destinationLocation;
-
+    
+    // Gets the start location from user input.
     std::cout << "Enter start location: ";
     std::getline(
         std::cin,
         startLocation);
     
+    // Ensures the entered location exists in the graph.
     if (!routeNetwork.hasLocation(startLocation))
     {
         std::cout
@@ -47,12 +50,14 @@ int main()
         return 1;
     }
 
+    // Execute Dijkstra's shortest path algorithm. 
     pathresult result = 
         finder.findShortestPath(
             routeNetwork,
             startLocation,
             destinationLocation);
     
+    // Output showing the shortest distance and route found by the algorithm
     std::cout
         << "Shortest Distance: "
         << result.getDistance()
