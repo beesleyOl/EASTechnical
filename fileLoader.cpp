@@ -1,5 +1,6 @@
 #include "fileLoader.h"
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 
@@ -19,50 +20,70 @@ graph fileLoader::loadGraph(
     std::string line;
 
     while (std::getline(
-        file,
-        line))
+    file,
+    line))
+{
+    if (line.empty())
     {
-        std::stringstream ss(line);
-
-        std::string from;
-        std::string to;
-        std::string distanceString;
-        
-        std::getline(
-            ss,
-            from,
-            ',');
-        
-        std::getline(
-            ss,
-            to,
-            ',');
-
-        std::getline(
-            ss,
-            distanceString,
-            ',');    
-        
-        int distance = 
-            std::stoi(distanceString);
-        
-        if (!routeNetwork.hasLocation(from))
-        {
-            routeNetwork.addLocation(
-                location(from));
-        }
-
-        if (!routeNetwork.hasLocation(to))
-        {
-            routeNetwork.addLocation(
-                location(to));
-        }
-
-        routeNetwork.addConnection(
-            from,
-            to,
-            distance);
+        continue;
     }
+
+    std::stringstream ss(line);
+
+    std::string from;
+    std::string to;
+    std::string distanceString;
+
+    std::getline(ss, from, ',');
+    std::getline(ss, to, ',');
+    std::getline(ss, distanceString, ',');
+
+    if (from.empty() ||
+        to.empty() ||
+        distanceString.empty())
+    {
+        std::cout
+            << "Skipping malformed line: "
+            << line
+            << '\n';
+
+        continue;
+    }
+
+    int distance;
+
+    try
+    {
+        distance =
+            std::stoi(distanceString);
+    }
+    catch (const std::exception&)
+    {
+        std::cout
+            << "Skipping invalid line: "
+            << line
+            << '\n';
+
+        continue;
+    }
+
+    if (!routeNetwork.hasLocation(from))
+    {
+        routeNetwork.addLocation(
+            location(from));
+    }
+
+    if (!routeNetwork.hasLocation(to))
+    {
+        routeNetwork.addLocation(
+            location(to));
+    }
+
+    routeNetwork.addConnection(
+        from,
+        to,
+        distance);
+}
 
     return routeNetwork;
 }
